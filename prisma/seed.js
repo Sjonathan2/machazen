@@ -11,7 +11,6 @@ function daysAgo(n) {
 }
 
 async function main() {
-  // --- USERS ---
   const passwordKent = await bcrypt.hash('machazen4life', 10)
   const passwordJoshua = await bcrypt.hash('12345678', 10)
   const passwordJersy = await bcrypt.hash('osmanthus wine', 10)
@@ -43,7 +42,6 @@ async function main() {
     return employeeIds[Math.floor(Math.random() * employeeIds.length)]
   }
 
-  // --- CLEAN EXISTING DATA ---
   await prisma.calendarEvent.deleteMany()
   await prisma.purchaseItem.deleteMany()
   await prisma.purchaseOrder.deleteMany()
@@ -55,7 +53,6 @@ async function main() {
   await prisma.note.deleteMany()
   await prisma.stock.deleteMany()
 
-  // --- STOCK ---
   const stockItems = [
     { name: 'Matcha Powder', unit: 'gram', quantity: 2500, minLevel: 500 },
     { name: 'Gula Pasir', unit: 'gram', quantity: 8000, minLevel: 2000 },
@@ -86,7 +83,6 @@ async function main() {
     return allStocks.find(s => s.name === name)
   }
 
-  // --- RECIPES ---
   const recipes = [
     {
       name: 'Matcha Latte', price: 25000,
@@ -206,7 +202,6 @@ async function main() {
     createdRecipes.push(recipe)
   }
 
-  // --- SALES ORDERS (last 30 days) ---
   const customerNames = [
     'Budi Santoso', 'Siti Rahma', 'Andi Wijaya', 'Rina Amelia', 'Doni Prasetyo',
     'Maya Sari', 'Agus Hartono', 'Dewi Lestari', 'Hendra Gunawan', 'Lisa Permata',
@@ -267,7 +262,6 @@ async function main() {
     }
   }
 
-  // --- MANUAL FINANCE TRANSACTIONS (via Notes) ---
   const expenses = [
     { amount: 1500000, source: 'sewa', description: 'Sewa Tempat Bulanan', kind: 'beban', category: 'Sewa Tempat', method: 'Transfer', date: daysAgo(25) },
     { amount: 350000, source: 'listrik', description: 'Tagihan Listrik', kind: 'beban', category: 'Listrik & Air', method: 'Transfer', date: daysAgo(20) },
@@ -329,7 +323,6 @@ async function main() {
     })
   }
 
-  // --- PURCHASE ORDERS ---
   const purchases = [
     { place: 'Supermarket Borongan', daysAgo: 29, items: [
       { name: 'Matcha Powder', unit: 'gram', qtyItems: 500, net: 500, pricePerItem: 150 },
@@ -381,7 +374,6 @@ async function main() {
     }
   }
 
-  // --- STOCK LOGS ---
   const stockLogActions = ['restock', 'usage', 'adjustment', 'restock', 'usage', 'usage', 'restock']
   for (let i = 0; i < 20; i++) {
     const stock = allStocks[Math.floor(Math.random() * allStocks.length)]
@@ -399,7 +391,6 @@ async function main() {
     })
   }
 
-  // --- REGULAR NOTES ---
   const regularNotes = [
     { title: 'Ide Menu Baru', content: 'Coba bikin Matcha Tiramisu untuk menu bulan depan. Resep sudah dicoba di rumah rasanya enak!', userId: kentId, daysAgo: 27 },
     { title: 'Review Pelanggan', content: 'Pelanggan bilang Matcha Boba nya kurang manis. Mungkin perlu tambah takaran sirup jadi 30ml.', userId: joshuaId, daysAgo: 20 },
@@ -417,7 +408,6 @@ async function main() {
     })
   }
 
-  // --- METRIC NOTES ---
   await prisma.note.create({
     data: { title: 'METRIC_TOTAL_PRODUCTS_SOLD', content: String(totalProductsSold), authorId: kentId },
   })

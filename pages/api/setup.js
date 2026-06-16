@@ -17,7 +17,6 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
 
   try {
-    // --- CLEAR existing data ---
     await prisma.calendarEvent.deleteMany()
     await prisma.purchaseItem.deleteMany()
     await prisma.purchaseOrder.deleteMany()
@@ -29,7 +28,6 @@ export default async function handler(req, res) {
     await prisma.note.deleteMany()
     await prisma.stock.deleteMany()
 
-    // --- USERS ---
     const users = await prisma.user.findMany()
     const kentId = users.find(u => u.email === 'kent@machazen.id').id
     const joshuaId = users.find(u => u.email === 'bukanalden@gmail.com')?.id
@@ -39,7 +37,6 @@ export default async function handler(req, res) {
     const employeeIds = [joshuaId, jersyId, patriciaId, laurenciaId].filter(Boolean)
     function randomUserId() { return employeeIds[Math.floor(Math.random() * employeeIds.length)] }
 
-    // --- STOCK (30 items) ---
     const stockItems = [
       { name: 'Matcha Powder (Premium)', unit: 'gram', quantity: 5000, minLevel: 800 },
       { name: 'Matcha Powder (Reguler)', unit: 'gram', quantity: 8000, minLevel: 1500 },
@@ -76,7 +73,6 @@ export default async function handler(req, res) {
     const allStocks = await prisma.stock.findMany()
     function stockByName(name) { return allStocks.find(s => s.name === name) }
 
-    // --- RECIPES (15 menu) ---
     const recipes = [
       {
         name: 'Matcha Latte', price: 25000,
@@ -241,7 +237,6 @@ export default async function handler(req, res) {
       createdRecipes.push(recipe)
     }
 
-    // --- CUSTOMERS (30+) ---
     const customerNames = [
       'Budi Santoso', 'Siti Rahma', 'Andi Wijaya', 'Rina Amelia', 'Doni Prasetyo',
       'Maya Sari', 'Agus Hartono', 'Dewi Lestari', 'Hendra Gunawan', 'Lisa Permata',
@@ -252,7 +247,6 @@ export default async function handler(req, res) {
       'Haryo Yudhistira', 'Dian Puspita',
     ]
 
-    // --- SALES ORDERS (60 days) ---
     let totalProductsSold = 0
     for (let dayOffset = 0; dayOffset < 60; dayOffset++) {
       const dayOfWeek = new Date(daysAgo(dayOffset)).getDay()
@@ -290,7 +284,6 @@ export default async function handler(req, res) {
       }
     }
 
-    // --- FINANCE TRANSACTIONS (15+) ---
     const financeTx = [
       { amount: 1500000, source: 'sewa', description: 'Sewa Tempat Bulan Juni 2026', method: 'Transfer', date: daysAgo(55), kind: 'beban', category: 'Sewa Tempat' },
       { amount: 1500000, source: 'sewa', description: 'Sewa Tempat Bulan Juli 2026', method: 'Transfer', date: daysAgo(25), kind: 'beban', category: 'Sewa Tempat' },
@@ -319,7 +312,6 @@ export default async function handler(req, res) {
       })
     }
 
-    // --- PURCHASE ORDERS (10+) ---
     const purchases = [
       { place: 'Supplier Matcha Indo', daysAgo: 50, items: [{ name: 'Matcha Powder (Premium)', unit: 'gram', qtyItems: 2000, net: 2000, pricePerItem: 200 }, { name: 'Bubuk Coklat Premium', unit: 'gram', qtyItems: 1000, net: 1000, pricePerItem: 85 }] },
       { place: 'Supermarket Borongan', daysAgo: 45, items: [{ name: 'Gula Pasir Putih', unit: 'gram', qtyItems: 8000, net: 8000, pricePerItem: 18 }, { name: 'Susu UHT Full Cream', unit: 'ml', qtyItems: 12000, net: 12000, pricePerItem: 25 }, { name: 'Telur Ayam Negeri', unit: 'gram', qtyItems: 3000, net: 3000, pricePerItem: 3 }] },
@@ -339,7 +331,6 @@ export default async function handler(req, res) {
       }
     }
 
-    // --- STOCK LOGS ---
     const actions = ['restock', 'usage', 'usage', 'usage', 'restock', 'adjustment']
     for (let i = 0; i < 30; i++) {
       const stock = allStocks[Math.floor(Math.random() * allStocks.length)]
@@ -350,7 +341,6 @@ export default async function handler(req, res) {
       })
     }
 
-    // --- REGULAR NOTES ---
     const notes = [
       { title: 'Review Penjualan Juni', content: 'Penjualan bulan Juni naik 15% dibanding bulan lalu. Matcha Latte masih jadi menu favorit!', userId: kentId, daysAgo: 52 },
       { title: 'Ide Menu Baru', content: 'Coba bikin Matcha Tiramisu untuk menu bulan depan. Resep sudah dicoba di rumah, rasanya enak banget!', userId: kentId, daysAgo: 40 },
@@ -363,10 +353,8 @@ export default async function handler(req, res) {
       await prisma.note.create({ data: { title: note.title, content: note.content, authorId: note.userId, createdAt: daysAgo(note.daysAgo) } })
     }
 
-    // --- METRIC NOTE ---
     await prisma.note.create({ data: { title: 'METRIC_TOTAL_PRODUCTS_SOLD', content: String(totalProductsSold), authorId: kentId } })
 
-    // --- CALENDAR EVENTS ---
     const events = [
       { date: '2026-06-01', timeLabel: '09:00', time24: '09:00', title: 'Meeting Evaluasi Bulanan', location: 'Machazen', details: 'Review penjualan bulan Mei dan target Juni', userId: kentId },
       { date: '2026-06-15', timeLabel: '14:00', time24: '14:00', title: 'Taste Test Menu Baru', location: 'Machazen', details: 'Nyobain Matcha Tiramisu dan Red Velvet Matcha', userId: kentId },
