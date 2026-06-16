@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  password  String
+  role      String  @default("pegawai")
+  createdAt DateTime @default(now())
+}
+
+model Stock {
+  id        Int     @id @default(autoincrement())
+  name      String
+  unit      String
+  quantity  Float   @default(0)
+  minLevel  Float   @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Note {
+  id        Int     @id @default(autoincrement())
+  title     String  @db.Text
+  content   String  @db.Text
+  authorId  Int
+  createdAt DateTime @default(now())
+}
+
+model StockLog {
+  id        Int     @id @default(autoincrement())
+  stockId   Int
+  action    String
+  quantity  Float
+  note      String?
+  userId    Int
+  createdAt DateTime @default(now())
+}
+
+model Recipe {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  price     Float   @default(0)
+  description String?
+  createdAt DateTime @default(now())
+}
+
+model RecipeIngredient {
+  id        Int     @id @default(autoincrement())
+  recipeId  Int
+  stockId   Int
+  quantity  Float
+  unit      String?
+  createdAt DateTime @default(now())
+}
+
+model SalesOrder {
+  id          Int      @id @default(autoincrement())
+  customerName String?
+  total       Float    @default(0)
+  paid        Boolean  @default(false)
+  userId      Int?
+  createdAt   DateTime @default(now())
+}
+
+model SalesOrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  recipeId  Int?
+  name      String
+  unit      String?
+  price     Float    @default(0)
+  quantity  Float    @default(0)
+  createdAt DateTime @default(now())
+}
+
+model PurchaseOrder {
+  id        Int      @id @default(autoincrement())
+  place     String?
+  userId    Int?
+  createdAt DateTime @default(now())
+}
+
+model PurchaseItem {
+  id           Int      @id @default(autoincrement())
+  orderId      Int
+  name         String
+  unit         String?
+  qtyItems     Float    @default(0)
+  net          Float    @default(0)
+  pricePerItem Float    @default(0)
+  totalPrice   Float    @default(0)
+  createdAt    DateTime @default(now())
+}
+
+model CalendarEvent {
+  id        Int      @id @default(autoincrement())
+  date      String
+  timeLabel String
+  time24    String
+  title     String
+  location  String?
+  details   String?
+  userId    Int?
+  createdAt DateTime @default(now())
+}
