@@ -114,7 +114,7 @@ export default function Nav({ user, isCollapsed, setIsCollapsed, mobileOverlay =
         </div>
         <div className="border-t pt-4">
           {!isCollapsed && <div className="text-sm mb-4">{displayName}</div>}
-          {user?.email === 'kent@machazen.id' && (
+          {user?.role === 'owner' && (
             <button
               onClick={generateReport}
               className={`mb-3 ${isCollapsed ? 'w-12' : 'w-full'} bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 transition flex items-center justify-center`}

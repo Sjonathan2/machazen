@@ -413,7 +413,7 @@ export default async function handler(req, res) {
   const auth = getAuthFromCookie(req)
   if (!auth) return res.status(401).json({ error: 'Unauthorized' })
   const email = auth.email
-  if (email !== 'kent@machazen.id') return res.status(403).json({ error: 'Forbidden' })
+  if (auth.role !== 'owner') return res.status(403).json({ error: 'Forbidden' })
 
   const user = await prisma.user.findUnique({ where: { email } })
   const stocks = await prisma.stock.findMany({ orderBy: { name: 'asc' } })

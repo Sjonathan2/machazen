@@ -229,7 +229,7 @@ export default function Dashboard() {
       <p className="text-gray-600 mb-6">Selamat datang, {welcomeName}</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {user?.email === 'kent@machazen.id' && (
+        {user?.role === 'owner' && (
           <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-white p-5 rounded-lg shadow gradient-background" style={{ borderTop: '4px solid #ffc3de' }}>
               <div className="font-bold mb-2">Menu Paling Populer</div>
