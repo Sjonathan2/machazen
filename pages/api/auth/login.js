@@ -13,10 +13,12 @@ export default async function handler(req, res) {
   try {
     const SEED_USERS = {
       'kent@machazen.id':     { password: 'machazen4life',       role: 'owner' },
+      'owner@machazen.id':    { password: 'owner1234',           role: 'owner' },
       'bukanalden@gmail.com': { password: '12345678',            role: 'pegawai' },
       'jersy_istri@zhongli.com': { password: 'osmanthus wine',   role: 'pegawai' },
       'leenciaaa@gmail.com':  { password: 'iluvmatcha',          role: 'pegawai' },
       'lauren@machazen.id':   { password: 'ilovematchapolguys',  role: 'pegawai' },
+      'employee@machazen.id': { password: 'employee1234',        role: 'pegawai' },
     }
 
     let user = await prisma.user.findUnique({ where: { email } })

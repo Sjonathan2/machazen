@@ -214,10 +214,12 @@ export default function Dashboard() {
 
   const NAME_MAP = {
     'kent@machazen.id': 'Kent Susanto',
+    'owner@machazen.id': 'Owner Machazen',
     'bukanalden@gmail.com': 'Joshua Alden',
     'jersy_istri@zhongli.com': 'Jersy Liora',
     'leenciaaa@gmail.com': 'Patricia Aileen',
-    'lauren@machazen.id': 'Laurencia Aurelia Calysta'
+    'lauren@machazen.id': 'Laurencia Aurelia Calysta',
+    'employee@machazen.id': 'Employee Machazen',
   }
   const welcomeName = user?.email && NAME_MAP[user.email] ? NAME_MAP[user.email] : user?.email
 
