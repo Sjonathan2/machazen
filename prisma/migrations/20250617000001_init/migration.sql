@@ -1,126 +1,128 @@
 -- CreateTable
-CREATE TABLE `User` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `email` VARCHAR(191) NOT NULL,
-    `password` VARCHAR(191) NOT NULL,
-    `role` VARCHAR(191) NOT NULL DEFAULT 'pegawai',
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    UNIQUE INDEX `User_email_key`(`email`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT 'pegawai',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateTable
-CREATE TABLE `Stock` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
-    `unit` VARCHAR(191) NOT NULL,
-    `quantity` DOUBLE NOT NULL DEFAULT 0,
-    `minLevel` DOUBLE NOT NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Stock" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "unit" TEXT NOT NULL,
+    "quantity" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "minLevel" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Stock_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
-CREATE TABLE `Note` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` TEXT NOT NULL,
-    `content` TEXT NOT NULL,
-    `authorId` INTEGER NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Note" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Note_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
-CREATE TABLE `StockLog` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `stockId` INTEGER NOT NULL,
-    `action` VARCHAR(191) NOT NULL,
-    `quantity` DOUBLE NOT NULL,
-    `note` TEXT,
-    `userId` INTEGER NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "StockLog" (
+    "id" SERIAL NOT NULL,
+    "stockId" INTEGER NOT NULL,
+    "action" TEXT NOT NULL,
+    "quantity" DOUBLE PRECISION NOT NULL,
+    "note" TEXT,
+    "userId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "StockLog_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
-CREATE TABLE `Recipe` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
-    `price` DOUBLE NOT NULL DEFAULT 0,
-    `description` TEXT,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    UNIQUE INDEX `Recipe_name_key`(`name`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "Recipe" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "description" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Recipe_pkey" PRIMARY KEY ("id")
+);
+
+CREATE UNIQUE INDEX "Recipe_name_key" ON "Recipe"("name");
 
 -- CreateTable
-CREATE TABLE `RecipeIngredient` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `recipeId` INTEGER NOT NULL,
-    `stockId` INTEGER NOT NULL,
-    `quantity` DOUBLE NOT NULL,
-    `unit` VARCHAR(191),
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "RecipeIngredient" (
+    "id" SERIAL NOT NULL,
+    "recipeId" INTEGER NOT NULL,
+    "stockId" INTEGER NOT NULL,
+    "quantity" DOUBLE PRECISION NOT NULL,
+    "unit" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "RecipeIngredient_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
-CREATE TABLE `SalesOrder` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `customerName` VARCHAR(191),
-    `total` DOUBLE NOT NULL DEFAULT 0,
-    `paid` TINYINT NOT NULL DEFAULT 0,
-    `userId` INTEGER,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "SalesOrder" (
+    "id" SERIAL NOT NULL,
+    "customerName" TEXT,
+    "total" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "paid" BOOLEAN NOT NULL DEFAULT false,
+    "userId" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "SalesOrder_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
-CREATE TABLE `SalesOrderItem` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `orderId` INTEGER NOT NULL,
-    `recipeId` INTEGER,
-    `name` VARCHAR(191) NOT NULL,
-    `unit` VARCHAR(191),
-    `price` DOUBLE NOT NULL DEFAULT 0,
-    `quantity` DOUBLE NOT NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "SalesOrderItem" (
+    "id" SERIAL NOT NULL,
+    "orderId" INTEGER NOT NULL,
+    "recipeId" INTEGER,
+    "name" TEXT NOT NULL,
+    "unit" TEXT,
+    "price" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "quantity" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "SalesOrderItem_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
-CREATE TABLE `PurchaseOrder` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `place` VARCHAR(191),
-    `userId` INTEGER,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "PurchaseOrder" (
+    "id" SERIAL NOT NULL,
+    "place" TEXT,
+    "userId" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "PurchaseOrder_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
-CREATE TABLE `PurchaseItem` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `orderId` INTEGER NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
-    `unit` VARCHAR(191),
-    `qtyItems` DOUBLE NOT NULL DEFAULT 0,
-    `net` DOUBLE NOT NULL DEFAULT 0,
-    `pricePerItem` DOUBLE NOT NULL DEFAULT 0,
-    `totalPrice` DOUBLE NOT NULL DEFAULT 0,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "PurchaseItem" (
+    "id" SERIAL NOT NULL,
+    "orderId" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "unit" TEXT,
+    "qtyItems" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "net" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "pricePerItem" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "totalPrice" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "PurchaseItem_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
-CREATE TABLE `CalendarEvent` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `date` VARCHAR(191) NOT NULL,
-    `timeLabel` VARCHAR(191) NOT NULL,
-    `time24` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(191) NOT NULL,
-    `location` VARCHAR(191),
-    `details` TEXT,
-    `userId` INTEGER,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "CalendarEvent" (
+    "id" SERIAL NOT NULL,
+    "date" TEXT NOT NULL,
+    "timeLabel" TEXT NOT NULL,
+    "time24" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "location" TEXT,
+    "details" TEXT,
+    "userId" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "CalendarEvent_pkey" PRIMARY KEY ("id")
+);
